@@ -1,0 +1,49 @@
+---
+title: "penguin_filtering"
+author: "Julia Parish"
+date: "8/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+# I want to create a scatterplot of flipper length versus body mass, with body mass converted to kilograms, only for Adelie penguins. - need to add a column to convert grams to kilograms so divide by 1000. grams(1 kg/1000g) always write down conversions by hand
+
+creating a new object stored in enviro as "adelies" (and then = pipe command - use shortcut, then press enter to vertically arrange) Using Filter - don't have to add data name b/c you piped into the filter function, give it a conditional statement to only keep adelie penguins, to find out if it is a match use == (it is case senstive), filter is similar to subset (base R) but plays nicer with tidyverse functions
+# to add a new column, use the mutate function, you are assigning it so =, not asking a ? when we used ==
+
+what does facet wrap do for ggplot? Creates new panels in plot based on a factor or element (ex: island)
+```{r}
+adelies <- penguins %>% 
+  filter(species == "Adelie") %>% 
+  mutate(body_mass_kg = body_mass_g / 1000)
+
+ggplot(data = adelies, aes(x = flipper_length_mm, y = body_mass_kg)) + 
+  geom_point(aes(color = island)) + 
+  facet_wrap(~island)
+
+unique(adelies$species)
+```
+
+# no facet wrap of above ggplot
+```{r}
+ggplot(data = adelies, aes(x = flipper_length_mm, y = body_mass_kg)) + 
+  geom_point(aes(color = island))
+
+# answered Desik's Q re: aes
+ggplot(data = adelies, aes(x = flipper_length_mm, y = body_mass_kg)) + 
+    geom_point(aes(color = "blue")) +
+    geom_line(aes(color = island)) + 
+    facet_wrap(~island)
+
+ggplot(data = penguins) +
+   geom_point(aes(x = flipper_length_mm, y = body_mass_g))
+
+
+```
+

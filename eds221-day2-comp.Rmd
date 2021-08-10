@@ -1,0 +1,161 @@
+---
+title: "Making & Indexing Data in R"
+author: "Julia Parish"
+date: "8/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(palmerpenguins)
+library(tidyverse)
+
+```
+
+## Make vectors and check them out - have to be the same class (homogenous)
+
+always think about what you want to have in code chunk vs console
+
+```{r}
+dogs <- c("teddy", 40, "waffle", "banjo", 5L)
+dogs
+
+# Check the class:
+class(dogs)
+```
+
+# R will make assumptions on class of characters, but may not be the most useful. Check class of things and reassign as needed
+
+```{r}
+dog_age <- c(1.4, 5.2, 6, 10)
+dog_age
+
+class(dog_age)
+typeof(dog_age)
+
+dog_miles <- c(4L, 5L, 6L)
+class(dog_miles)
+typeof(dog_miles)
+
+is.character(dog_miles)
+is.character(dogs)
+
+```
+# Is.character can be built in as a unit test, to ensure you are using the correct vector. 
+
+# Can assign names in vectors
+```{r}
+dog_food <- c(teddy = "purina", 
+              khora = "alpo", 
+              waffle = "fancy fest",
+              banjo = "blue diamond")
+
+dog_food
+class(dog_food)
+
+```
+# To access different elements of a vector - reference & index
+
+# To access info for khora
+```{r}
+dog_food[2]
+dog_food["khora"]
+
+# the outputs above are not stored, if you want to use them later, you must assign it
+
+khora_food <- dog_food[2]
+khora_food
+
+```
+# If you want to pull a range of elements
+
+```{r}
+
+cars <- c("red", "white", "yellow", "silver", "blue", "black", "purple", "green", "gray")
+
+# reference a sequence of values
+cars[2:5]
+
+# you can have any variable name in the brackets
+
+i <- 3
+
+cars[i]
+
+i <- c(1, 5, 7)
+# i as 3 no longer exsists
+
+cars[i]
+
+# elements are mutable
+
+cars[3] <- "BURRITOS"
+
+```
+
+## Lists in R
+
+```{r}
+urchins <- list("blue", 2, FALSE, 1200L)
+urchins 
+# tells you different elements in list when you call it [[1]], [[2]], etc...
+
+# actual value - contents of the element; almost always want to use this [[]] so you are calling the actual content
+urchins[[1]]
+
+# actual class - contents is list
+urchins[1]
+
+# 
+urchins <- list("blue", 
+                c(1 ,2, 3), 
+                seq(from = 0, to = 50, by = 0.5), 
+                1200L)
+urchins
+```
+
+# name things in list - each element has the same number of things making it pretty close to a data frame
+```{r}
+tacos <- list(topping = c("onion", "cabbage", "avocado"),
+              filling = c("beans", "fish", "meat"),
+              price = c(6.75, 8.25, 9.50)) 
+tacos
+
+# to get taco prices - not a list
+taco_price <- tacos[[3]]
+taco_price
+
+# if you have a dataframe, how do you call to a specific column? Use $ OR [[]]
+
+tacos$filling
+
+tacos[["filling"]]
+              
+```
+
+## Attach palmer penguins and tidyverse! All work above has been in base R. 
+### Now to make a data frames - should feel like making a list
+
+```{r}
+fruit <- data.frame(type = c("apple", "banana", "peach"),
+                    mass = c(130, 195, 150))
+fruit
+class(fruit)
+
+# to refer to a single piece of data frame, use $; not typically storing in Rmd files, but should always be checking, esp if math isn't working
+class(fruit$mass)
+
+# to store value of banana mass - the value is 2,2 (2nd row, 2nd column) To get the entire 'type' column back - use the $, fruit$type OR fruit[, 1] *don't forget the comma! It is saying get all rows in column 1. Typically do not want to hard code a position
+
+fruit[, 1]
+fruit$type
+
+```
+
+
+
+
+
+
+
